@@ -18,15 +18,17 @@ def attr_probs(data, attr):
     for index, row in df.iterrows():
         if row[attr[0]] == 1 and row['D'] == 1:
             positive += 1
+            tp += 1
         elif row[attr[0]] == 0 and row['D'] == 1:
             negative += 1
-        tp += 1
+            tp += 1
 
     probs['0'] = negative / tp
     probs['1'] = positive / tp
 
     print(f'Positive: {positive}/{tp}')
     print(f'Negative: {negative}/{tp}')
+    print(probs)
 
     return probs
 
@@ -55,6 +57,7 @@ def gain(data, attr):
     column = [attr, 'D']
     df = pd.DataFrame(data=data, columns=column)
     unique_values = unique(df[attr])
+    print(unique_values)
 
     set_positive, set_negative, set_total = 0, 0, 0
     subset_1_positive, subset_1_negative, subset_1_total = 0, 0, 0
@@ -116,26 +119,28 @@ def gain(data, attr):
                 - Negative: {set_negative}/{set_total}\n')
 
     print(f'- Set {attr}:')
-    print(f'    - Subset {unique_values[0]}:')
+    print(f'    - Subset {unique_values[0]}  "0":({round(subset_1_negative/subset_1_total,3)}) "1"({round(subset_1_positive/subset_1_total,3)}):')
     print(f'        - Positive: {subset_1_positive}/{subset_1_total} \
                     - Negative: {subset_1_negative}/{subset_1_total} \
                     - Entropy: {entropy_subset_1}')
 
-    print(f'    - Subset {unique_values[1]}:')
+    print(f'    - Subset {unique_values[1]} "0":({round(subset_2_negative/subset_2_total,3)}) "1"({round(subset_2_positive/subset_2_total,3)}):')
     print(f'        - Positive: {subset_2_positive}/{subset_2_total} \
                     - Negative: {subset_2_negative}/{subset_2_total} \
                     - Entropy: {entropy_subset_2}')
 
-    gain_value = entropy_set - (subset_1_total / set_total) * entropy_subset_1 - (subset_2_total / set_total) * entropy_subset_2
+    gain_value = entropy_set - (subset_1_total / set_total) * entropy_subset_1 - (
+                subset_2_total / set_total) * entropy_subset_2
 
     if len(unique_values) == 3:
         entropy_subset_3 = entropy([subset_3_positive / subset_3_total, subset_3_negative / subset_3_total])
-        print(f'    - Subset {unique_values[2]}:')
+        print(f'    - Subset {unique_values[2]} "0":({round(subset_3_negative/subset_3_total,3)}) "1"({round(subset_3_positive/subset_3_total,3)}):')
         print(f'        - Positive: {subset_3_positive}/{subset_3_total}\
                         - Negative: {subset_3_negative}/{subset_3_total}\
                         - Entropy: {entropy_subset_3}')
 
-        gain_value = entropy_set - (subset_1_total / set_total) * entropy_subset_1 - (subset_2_total / set_total) * entropy_subset_2 - (subset_3_total / set_total) * entropy_subset_3
+        gain_value = entropy_set - (subset_1_total / set_total) * entropy_subset_1 - (
+                    subset_2_total / set_total) * entropy_subset_2 - (subset_3_total / set_total) * entropy_subset_3
 
     print(f'\nSET {attr} GAIN:  {round(gain_value, 3)}\n')
     return round(gain_value, 3)
@@ -149,3 +154,5 @@ data = pd.read_csv('depression.csv', sep=',')
 ATTRS = ['A', 'B', 'C']
 for attr in ATTRS:
     gain(data, attr)
+
+attr_probs(data, ['A'])

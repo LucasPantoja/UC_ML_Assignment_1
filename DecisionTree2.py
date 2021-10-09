@@ -9,30 +9,32 @@ csv = pd.read_csv('depression.csv')
 
 data = csv.iloc[:, :-1]
 labels = csv.iloc[:, -1]
+print(data)
+print(labels)
 
-# X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.3, random_state=7)
-#
-# classifier = DecisionTreeClassifier(criterion='entropy')
-#
-# classifier.fit(X_train, y_train)
-# y_pred = classifier.predict(X_test)
-# cm = confusion_matrix(y_true=y_test, y_pred=y_pred)
-# plot_cm = ConfusionMatrixDisplay(confusion_matrix=cm)
-# TP = cm[0][0]
-# FN = cm[0][1]
-# FP = cm[1][0]
-# TN = cm[1][1]
-#
-# rules = export_text(classifier, feature_names=['A', 'B', 'C'])
-# print(rules)
-# plot_cm.plot()
-# plt.savefig('confusion_matrix')
-# plt.show()
-# print(classification_report(y_true=y_test, y_pred=y_pred))
-# print(f'- True Positive : {TP}\
-#         - True Negative : {TN}\
-#         - False Positive : {FP}\
-#         - False Negative : {FN}')
+X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.3, random_state=7)
+
+classifier = DecisionTreeClassifier(criterion='entropy')
+
+classifier.fit(X_train, y_train)
+y_pred = classifier.predict(X_test)
+cm = confusion_matrix(y_true=y_test, y_pred=y_pred)
+plot_cm = ConfusionMatrixDisplay(confusion_matrix=cm)
+TP = cm[0][0]
+FN = cm[0][1]
+FP = cm[1][0]
+TN = cm[1][1]
+
+rules = export_text(classifier, feature_names=['A', 'B', 'C'])
+print(rules)
+plot_cm.plot()
+plt.savefig('confusion_matrix')
+plt.show()
+print(classification_report(y_true=y_test, y_pred=y_pred))
+print(f'- True Positive : {TP}\
+        - True Negative : {TN}\
+        - False Positive : {FP}\
+        - False Negative : {FN}')
 
 accuracy = []
 for random_state in range(100):
