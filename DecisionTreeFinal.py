@@ -1,7 +1,7 @@
 import pandas as pd
-from sklearn.model_selection import train_test_split, KFold
+from sklearn.model_selection import train_test_split
 from sklearn.tree import DecisionTreeClassifier, export_text
-from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, classification_report, accuracy_score
+from sklearn.metrics import confusion_matrix, ConfusionMatrixDisplay, accuracy_score
 import matplotlib.pyplot as plt
 import numpy as np
 
@@ -145,10 +145,10 @@ def gain(data, attr):
 # ---------------------------------------------------- Exercise 4 ---------------------------------------------------- #
 # load data
 csv = pd.read_csv('depression.csv', sep=',')
-# entropy = entropy([4/7, 3/7])
+
 ATTRS = ['A', 'B', 'C']
-# for attr in ATTRS:
-#     gain(csv, attr)
+for attr in ATTRS:
+    gain(csv, attr)
 
 
 # ---------------------------------------------------- Exercise 5 ---------------------------------------------------- #
@@ -213,6 +213,7 @@ print(f'- True Positive : {round(TP * 100 / len(X_test), 3)}%\
         - F1 : {round(f1, 3)}')
 
 
+# ---------------------------------------------------- Exercise 8 ---------------------------------------------------- #
 accuracy = []
 for random_state in range(100):
     X_train, X_test, y_train, y_test = train_test_split(data, labels, test_size=0.3, random_state=random_state)
